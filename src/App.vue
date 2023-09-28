@@ -1,17 +1,15 @@
 <template>
-    <Sidebar />
-
+  <router-view></router-view>
 </template>
 
 <script>
-import Sidebar from './components/Sidebar.vue';
+import Login from '../src/views/Login.vue'
 
 export default {
   components: {
-    Sidebar
+    Login,
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>
