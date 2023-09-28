@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gravamenes-tgr-rest-ui
+spec:
+  selector:
+    matchLabels:
+      app: gravamenes-tgr-rest-ui
+  replicas: 1 # tells deployment to run 1 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: gravamenes-tgr-rest-ui
+    spec:
+      securityContext:
+        fsGroupChangePolicy: "OnRootMismatch"
+      containers:
+      - name: gravamenes-tgr-rest-ui
+        image: southamerica-west1-docker.pkg.dev/smart-arc-333317/containers-chile/gravamenes-tgr-rest-ui/version
+        env:
+        - name: TZ
+          value: America/Santiago
+        imagePullPolicy: Always
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ilb-svc-gravamenes-tgr-rest-ui
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Cluster
+  ports:
+    - name: port-1
+      protocol: TCP
+      port: 80
+      targetPort: 8081
+  selector:
+    app: gravamenes-tgr-rest-ui
+

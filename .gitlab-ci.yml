@@ -1,0 +1,3 @@
+include:
+    - project: 'operaciones/cicd/config'
+      file: '/gravamenes-tgr-rest-ui.yml'
